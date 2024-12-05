@@ -110,10 +110,9 @@ impl<'a, E: Engine> BatchedAccumulator<'a, E> {
                 position += g1_size * index;
                 assert!(
                     index < parameters.powers_g1_length,
-                    format!(
-                        "Index of TauG1 element written must not exceed {}, while it's {}",
-                        parameters.powers_g1_length, index
-                    )
+                    "Index of TauG1 element written must not exceed {}, while it's {}",
+                    parameters.powers_g1_length,
+                    index
                 );
 
                 position
@@ -123,10 +122,9 @@ impl<'a, E: Engine> BatchedAccumulator<'a, E> {
                 position += g1_size * required_tau_g1_power;
                 assert!(
                     index < required_power,
-                    format!(
-                        "Index of TauG2 element written must not exceed {}, while it's {}",
-                        required_power, index
-                    )
+                    "Index of TauG2 element written must not exceed {}, while it's {}",
+                    required_power,
+                    index
                 );
                 position += g2_size * index;
 
@@ -138,10 +136,9 @@ impl<'a, E: Engine> BatchedAccumulator<'a, E> {
                 position += g2_size * required_power;
                 assert!(
                     index < required_power,
-                    format!(
-                        "Index of AlphaG1 element written must not exceed {}, while it's {}",
-                        required_power, index
-                    )
+                    "Index of AlphaG1 element written must not exceed {}, while it's {}",
+                    required_power,
+                    index
                 );
                 position += g1_size * index;
 
@@ -154,10 +151,9 @@ impl<'a, E: Engine> BatchedAccumulator<'a, E> {
                 position += g1_size * required_power;
                 assert!(
                     index < required_power,
-                    format!(
-                        "Index of BetaG1 element written must not exceed {}, while it's {}",
-                        required_power, index
-                    )
+                    "Index of BetaG1 element written must not exceed {}, while it's {}",
+                    required_power,
+                    index
                 );
                 position += g1_size * index;
 
@@ -404,10 +400,10 @@ impl<'a, E: Engine> BatchedAccumulator<'a, E> {
                         &input_map,
                     )
                     .unwrap_or_else(|_| {
-                        panic!(format!(
+                        panic!(
                             "must read a chunk from {} to {} from `challenge`",
                             start, end
-                        ))
+                        )
                     });
                 after
                     .read_chunk(
@@ -418,10 +414,10 @@ impl<'a, E: Engine> BatchedAccumulator<'a, E> {
                         &output_map,
                     )
                     .unwrap_or_else(|_| {
-                        panic!(format!(
+                        panic!(
                             "must read a chunk from {} to {} from `response`",
                             start, end
-                        ))
+                        )
                     });
 
                 // Are the powers of tau correct?
@@ -482,10 +478,10 @@ impl<'a, E: Engine> BatchedAccumulator<'a, E> {
                         &input_map,
                     )
                     .unwrap_or_else(|_| {
-                        panic!(format!(
+                        panic!(
                             "must read a chunk from {} to {} from `challenge`",
                             start, end
-                        ))
+                        )
                     });
                 after
                     .read_chunk(
@@ -496,10 +492,10 @@ impl<'a, E: Engine> BatchedAccumulator<'a, E> {
                         &output_map,
                     )
                     .unwrap_or_else(|_| {
-                        panic!(format!(
+                        panic!(
                             "must read a chunk from {} to {} from `response`",
                             start, end
-                        ))
+                        )
                     });
 
                 assert_eq!(
@@ -562,10 +558,10 @@ impl<'a, E: Engine> BatchedAccumulator<'a, E> {
                         &input_map,
                     )
                     .unwrap_or_else(|_| {
-                        panic!(format!(
+                        panic!(
                             "must read a chunk from {} to {} from source of decompression",
                             start, end
-                        ))
+                        )
                     });
                 accumulator.write_chunk(start, UseCompression::No, output_map)?;
             } else {
@@ -587,10 +583,10 @@ impl<'a, E: Engine> BatchedAccumulator<'a, E> {
                         &input_map,
                     )
                     .unwrap_or_else(|_| {
-                        panic!(format!(
+                        panic!(
                             "must read a chunk from {} to {} from source of decompression",
                             start, end
-                        ))
+                        )
                     });
                 assert_eq!(
                     accumulator.tau_powers_g2.len(),
@@ -645,10 +641,10 @@ impl<'a, E: Engine> BatchedAccumulator<'a, E> {
                         &input_map,
                     )
                     .unwrap_or_else(|_| {
-                        panic!(format!(
+                        panic!(
                             "must read a chunk from {} to {} from source of decompression",
                             start, end
-                        ))
+                        )
                     });
                 tau_powers_g1.extend_from_slice(&accumulator.tau_powers_g1);
                 tau_powers_g2.extend_from_slice(&accumulator.tau_powers_g2);
@@ -676,10 +672,10 @@ impl<'a, E: Engine> BatchedAccumulator<'a, E> {
                         &input_map,
                     )
                     .unwrap_or_else(|_| {
-                        panic!(format!(
+                        panic!(
                             "must read a chunk from {} to {} from source of decompression",
                             start, end
-                        ))
+                        )
                     });
                 assert_eq!(
                     accumulator.tau_powers_g2.len(),
@@ -980,7 +976,8 @@ impl<'a, E: Engine> BatchedAccumulator<'a, E> {
                     }
                 });
             }
-        }).unwrap();
+        })
+        .unwrap();
 
         // extra check that during the decompression all the the initially initialized infinitu points
         // were replaced with something
@@ -1159,7 +1156,8 @@ impl<'a, E: Engine> BatchedAccumulator<'a, E> {
                         }
                     });
                 }
-            }).unwrap();
+            })
+            .unwrap();
 
             // Perform batch normalization
             crossbeam::scope(|scope| {
@@ -1168,7 +1166,8 @@ impl<'a, E: Engine> BatchedAccumulator<'a, E> {
                         C::Projective::batch_normalization(projective);
                     });
                 }
-            }).unwrap();
+            })
+            .unwrap();
 
             // Turn it all back into affine points
             for (projective, affine) in projective.iter().zip(bases.iter_mut()) {
@@ -1213,7 +1212,8 @@ impl<'a, E: Engine> BatchedAccumulator<'a, E> {
                             }
                         });
                     }
-                }).unwrap();
+                })
+                .unwrap();
 
                 batch_exp::<E, _>(&mut accumulator.tau_powers_g1, &taupowers[0..], None);
                 batch_exp::<E, _>(&mut accumulator.tau_powers_g2, &taupowers[0..], None);
@@ -1275,7 +1275,8 @@ impl<'a, E: Engine> BatchedAccumulator<'a, E> {
                             }
                         });
                     }
-                }).unwrap();
+                })
+                .unwrap();
 
                 batch_exp::<E, _>(&mut accumulator.tau_powers_g1, &taupowers[0..], None);
                 //accumulator.beta_g2 = accumulator.beta_g2.mul(key.beta).into_affine();
